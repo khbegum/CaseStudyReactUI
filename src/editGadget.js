@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import createHistory from 'history/createBrowserHistory';
+//import createHistory from 'history/createBrowserHistory';
 import {withRouter} from 'react-router-dom'
-const history=createHistory();
+const history=require('history').createBrowserHistory
 export class EditGadget extends Component {
     constructor(props){
 super(props);
-this.state={
+this.state={    
     id:'',
     name:'',
     
@@ -38,7 +38,7 @@ this.state={
 
     }
     cancel=()=>{
-history.push('/manage');
+this.props.history.push('/manage');
     }
     onchanged=(e)=>{
         this.setState({[e.target.name]:e.target.value})
@@ -46,8 +46,8 @@ history.push('/manage');
     save=()=>{
 
 console.log(this.state)
-axios.put(this.serviceUrl+ this.state.id,this.state).then((res)=>{
-    history.push('/manage')
+axios.put(this.serviceUrl+ this.state.id,this.state).then(()=>{
+    this.props.history.push('/manage');
 })
     }
     render() {
@@ -57,37 +57,37 @@ axios.put(this.serviceUrl+ this.state.id,this.state).then((res)=>{
               <div class="col-md-4 col-md-offset-4" >
     <form action="">
 <div class="form-group">
-    <label for="">Gadget Name</label>
-<input type="text" onChange={this.onchanged}  value={this.state.name}  class="form-group"/>
+    <label >Gadget Name</label>
+<input type="text" onChange={this.onchanged} name="name" value={name}  class="form-group"/>
 
 </div>
 <div class="form-group">
-    <label for="">Gadget Type</label>
+    <label >Gadget Type</label>
 <input type="text" onChange={this.onchanged} name="type" value={type}  class="form-group"/>
 
 </div>
 <div class="form-group">
-    <label for="">Gadget Colour</label>
+    <label >Gadget Colour</label>
 <input type="text" onChange={this.onchanged} name="colour" value={colour} class="form-group"/>
 
 </div>
 <div class="form-group">
-    <label for="">Gadget Cost</label>
+    <label >Gadget Cost</label>
 <input type="text"onChange={this.onchanged} name="cost" value={cost} class="form-group"/>
 
 </div>
 <div class="form-group">
-    <label for="">Gadget Poster Url</label>
+    <label >Gadget Poster Url</label>
 <input type="text"onChange={this.onchanged} name="poster" value={poster} class="form-group"/>
 
 </div>
 <div class="form-group">
-    <label for="">Gadget Description</label>
+    <label >Gadget Description</label>
 <input type="text" onChange={this.onchanged} name="description" value={description}  class="form-group"/>
 
 </div>
 <div class="form-group">
-    <label for="">Gadget Product count</label>
+    <label >Gadget Product count</label>
 <input type="text" onChange={this.onchanged} name="productCount" value={productCount}  class="form-group"/>
 
 </div>

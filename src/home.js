@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 export class Home extends Component {
     serviceUrl="http://localhost:3004/api/gadgets/"
     constructor(){
         super();
         this.state={
-            gadgets:[]
+            gadgets:[],
+            userName:""
         }
         
 
     }
     addToCart=(_id,name, type, colour, cost, poster, description,productCount)=>{
+        if(localStorage.getItem('token')){
 let newGadgetsInCart=[...this.state.gadgets];
 let newGadgetInCart={
-    _id:_id,
+     _id:_id,
 name:name,
 type:type,
 colour:colour,
@@ -22,11 +25,15 @@ poster:poster,
 description:description,
 productCount:productCount
 }
+
 axios.post("http://localhost:3004/api/cart/",newGadgetInCart).then((res)=>{
     newGadgetsInCart.push(newGadgetInCart);
     this.setState({gadgets:newGadgetsInCart})
-})
-    }
+})}
+else{
+    this.props.history.push('/login')
+}
+}
     componentDidMount(){
         axios.get(this.serviceUrl).then((res)=>{
             console.log(res.data);
@@ -34,11 +41,25 @@ axios.post("http://localhost:3004/api/cart/",newGadgetInCart).then((res)=>{
                 gadgets:res.data
             })
         })
+        let id=localStorage.getItem('_id');
+        axios.get("http://localhost:3004/api/users/"+id).then((res)=>{
+this.setState({
+
+    userName:res.data.name
+})
+
+
+        })
     }
     render() {
         return (
-           
-           
+           <div>
+               
+                           <div className="container-fluid d-flex justify-content-center" >
+          <text><h1  class="display-4">Hello, {this.state.userName}!</h1>
+          
+                              </text> 
+          </div>
               
           
             <div className="container-fluid d-flex justify-content-center">
@@ -58,8 +79,8 @@ axios.post("http://localhost:3004/api/cart/",newGadgetInCart).then((res)=>{
             <p>{gadget.type}</p>
             <p>{gadget.colour}</p>
             <p >{gadget.description}</p>
-            
-          <button onClick={()=> this.addToCart(gadget._id,gadget.name,gadget.type,gadget.colour,gadget.cost,gadget.poster,gadget.description,gadget.productCount)} class="btn btn-primary btn-right">Add to Cart</button>
+            {gadget.productCount>0?          <button onClick={()=> this.addToCart(gadget._id,gadget.name,gadget.type,gadget.colour,gadget.cost,gadget.poster,gadget.description,gadget.productCount)} class="btn btn-primary btn-right">Add to Cart</button>
+          : <button  class="btn btn-success btn-right" disabled>No Stock</button>          }
           </div>
           
          
@@ -72,10 +93,9 @@ axios.post("http://localhost:3004/api/cart/",newGadgetInCart).then((res)=>{
            </div> 
          )} </div>
            </div>
-          
-          
+          </div>          
         )
     }
 }
 
-export default Home
+export default withRouter(Home)

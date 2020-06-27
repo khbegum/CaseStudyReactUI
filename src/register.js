@@ -38,11 +38,13 @@ export class Register extends Component {
         users:newUsers
       })
       console.log(newUser);
-      createHistory.push('/login')
+      
+      this.props.history.push('/login')
     }).catch(error=>{
-      alert('user already existed')
-      console.log(error)
-    })
+     
+      alert(error.response.data.message)
+    }
+      )
     
 
   }

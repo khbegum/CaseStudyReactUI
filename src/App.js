@@ -10,24 +10,31 @@ import Register from './register';
 import ManageGadget from './manageGadget';
 import Cart from './cart';
 import EditGadget from './editGadget';
-import {createBrowserHistory} from 'history';
+import createHistory from 'history/createBrowserHistory';
+import ErrorHandler from './errorHandler';
+import { Payment } from './payment';
+const history = createHistory();
 
-export const customHistory = createBrowserHistory();
 function App() {
   return (
     <Router forceRefresh={true}>
     <div className="App">
      
-      <Header/>
+      <Header history={history}/>
     </div>
     <Switch>
-      <Route exact path="/" component={Home}/>
+      <Route exact path="/" history={history} component={Home}/>
+      
       <Route exact path="/about" component={AboutUs}/>
-      <Route exact path="/login" component={Login}/>
+  
+
+
       <Route exact path="/register" component={Register}/>
-      <Route exact path="/manage" component={ManageGadget}/>
-      <Route exact path="/cart" component={Cart}/>
-      <Route exact path="/edit/:_id" component={EditGadget}/>
+      <Route exact path="/manage" history={history} component={ManageGadget}/>
+      <Route exact path="/cart" history={history} component={Cart}/>
+      <Route exact path="/payment" history={history} component={Payment}/>
+      <Route exact path="/edit/:_id" history={history} component={EditGadget}/>
+      <Route exact path="/login" component={Login}/>
      </Switch>
     </Router>
   );

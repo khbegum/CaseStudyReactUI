@@ -1,17 +1,30 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import {withRouter} from 'react-router'
 import axios from 'axios'
 
+
 export class Header extends Component {
-  serviceUrl="http://localhost:3004/api/cart/"
-  constructor(){
-      super();
+  serviceUrl="http://localhost:3004/api/cart/";
+  loginButton;
+  type;
+  
+  constructor(props){
+      super(props);
       this.state={
-          count:0
+          count:0,
+          typeValue:""
+         
       }
       
 
   }
+  logOut(){
+   
+    localStorage.clear();
+    // this.props.history.push("/login");
+  }
+
   componentDidMount(){
       axios.get(this.serviceUrl).then((res)=>{
           console.log(res.data);
@@ -19,8 +32,38 @@ export class Header extends Component {
               count:res.data.length
           })
       })
+      if(localStorage.getItem('token')){
+
+        this.loginButton=  <li className="nav-item  active">
+        <Link to="/login" onClick={this.logOut} className="nav-link" >LogOut</Link>
+          
+        </li>   }
+        else{
+        this.loginButton=<ul className="navbar-nav  navbar-right ">   <li className="nav-item  active">
+        <Link to="/login" className="nav-link" >Login</Link>
+          
+        </li>
+        <li className="nav-item active">
+        <Link to="/register" className="nav-link" >Register</Link>
+        </li>
+        </ul>}
+      
+     
+      if(this.isEmployee()){
+        this.type=<li className="nav-item active">
+        <Link to="/manage" className="nav-link" >Manage Gadget</Link>
+        </li>
+      }
+       
   }
-    render() {
+  
+isEmployee(){
+  if(localStorage.getItem('type')==="Employee"){
+   return true;
+  }
+}
+
+  render() {
         return (
             <div>
                <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -36,23 +79,18 @@ export class Header extends Component {
       </li>
       <li className="nav-item active">
         <Link to="/about" className="nav-link" >About Us</Link>
-      </li>
-      <li className="nav-item active">
-        <Link to="/manage" className="nav-link" >ManageGadget</Link>
-      </li>
+        </li>
+        
+          {this.type}
+        
+     
       </ul>
       <ul className="navbar-nav  navbar-right ">
       <li className="nav-item  active">
         <Link to="/cart" className="nav-link" >Cart <span class="badge">{this.state.count}</span> </Link>
         
       </li>
-      <li className="nav-item  active">
-      <Link to="/login" className="nav-link" >Login</Link>
-        
-      </li>
-      <li className="nav-item active">
-      <Link to="/register" className="nav-link" >Register</Link>
-      </li>
+      {this.loginButton}
     </ul>
     
   </div>
@@ -62,7 +100,7 @@ export class Header extends Component {
     }
 }
 
-export default Header
+export default withRouter(Header)
 
 
 

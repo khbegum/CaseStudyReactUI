@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import createHistory from 'history/createBrowserHistory';
 import {withRouter} from 'react-router'
+import ErrorHandler from './errorHandler';
 const history=createHistory();
 
 export class Login extends Component {
@@ -24,20 +25,25 @@ export class Login extends Component {
    
 
     
-    axios.post(this.serviceUrl, loginInfo).then(()=>{
-      alert('success')
-   history.push('/')
-    }).catch((error)=>{
-      
-      console.log(error)
-    })
-    
-
-  }
+    axios.post(this.serviceUrl, loginInfo).then((res)=>{
+      localStorage.setItem('token',res.data.token)
+      localStorage.setItem('_id',res.data._id)
+      axios.get("http://localhost:3004/api/users/"+res.data._id).then((response)=>{
+        
+  localStorage.setItem('type',response.data.type)
+ })
+      alert('success');
+   this.props.history.push('/');
+   
+    }).catch(error=>{
+     
+      alert(error.response.data.message)
+    }
+      ) }
     render() {
         return (
           <div class="col-md-6 col-md-offset-4">
-          <h1>Registration Form</h1>
+                     <h1>Registration Form</h1>
           <div class="well">
             <form action="" className="formGroup">
           
