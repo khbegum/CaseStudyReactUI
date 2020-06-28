@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import Dialog from 'react-dialog'
+
 import axios from 'axios'
 export class Payment extends Component{
     serviceUrl="http://localhost:3004/api/cart/";
@@ -6,6 +8,7 @@ export class Payment extends Component{
     constructor(){
         super()
         this.state={
+            isDialogOpen:false,
             cart:[],
             totalpayment:0,
             id:'',
@@ -63,19 +66,22 @@ save=()=>{
             description:res.data.description,
             productCount:res.data.productCount-this.state.cart[i].productCount
         })
-     alert(this.state.productCount)
+     
       //this.state.productCount=this.state.productCount-this.state.cart[i].productCount;
       //console.log(this.state.productCount)
     axios.put("http://localhost:3004/api/gadgets/"+this.state.id,this.state).then((res)=>{
-      console.log(res)
+        alert("Payment Success");
+        this.props.history.push('/')
     })
-    this.props.history.push('/')
+   
 })
     }
-}    
+} 
+
 render(){
         return(
-            <div className="col-md-4">
+
+                <div className="col-md-4">
             <div className="card">
                 <h1>Welcome to payment</h1> 
                 {this.state.cart.map((gadget,i)=>
@@ -85,8 +91,9 @@ render(){
                 
                 )}
                 <p>Total Payment:{this.state.totalpayment}</p>     
-                <button className="btn btn-success" onClick={this.save}>Save</button><button onClick={this.cancel} className="btn btn-danger">Cancel</button>                         </div>      )
-                </div>
+                <button className="btn btn-success" onClick={this.save}>Save</button><button onClick={this.cancel} className="btn btn-danger">Cancel</button>            
+                             </div>   </div>  
+            
         )
     }
 }

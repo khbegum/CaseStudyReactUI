@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import createHistory from 'history/createBrowserHistory';
 import {withRouter} from 'react-router'
-import ErrorHandler from './errorHandler';
+
 const history=createHistory();
 
 export class Login extends Component {

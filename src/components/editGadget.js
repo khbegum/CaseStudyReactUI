@@ -47,8 +47,9 @@ this.props.history.push('/manage');
 
 console.log(this.state)
 axios.put(this.serviceUrl+ this.state.id,this.state).then(()=>{
-    this.props.history.push('/manage');
+    
 })
+this.props.history.push('/manage');
     }
     render() {
         const{name, type, colour, cost, poster, description,productCount}=this.state

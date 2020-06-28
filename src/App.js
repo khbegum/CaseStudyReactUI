@@ -1,18 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {Header} from './header';
+
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
-import Home from './home';
-import AboutUs from './aboutus';
-import Login from './login';
-import Register from './register';
-import ManageGadget from './manageGadget';
-import Cart from './cart';
-import EditGadget from './editGadget';
+
 import createHistory from 'history/createBrowserHistory';
-import ErrorHandler from './errorHandler';
-import { Payment } from './payment';
+
+import { Payment } from './components/payment';
+import { Home } from './components/home';
+import { Register } from './components/register';
+import { Login } from './components/login';
+import Cart from './components/cart';
+import AboutUs from './components/aboutus';
+import { ManageGadget } from './components/manageGadget';
+import { EditGadget } from './components/editGadget';
+import { Header } from './components/header';
+
 const history = createHistory();
 
 function App() {
